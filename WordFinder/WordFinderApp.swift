@@ -6,12 +6,19 @@
 //
 
 import SwiftUI
+import Search
 
 @main
 struct WordFinderApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            let apiService = DictionaryAPIService()
+            let realmService = RealmService()
+            let repository = DictionaryRepositoryImpl(apiService: apiService, realmService: realmService)
+            let searchUseCase = SearchUseCase(repository: repository)
+            let viewModel = SearchViewModel(searchUseCase: searchUseCase)
+            
+            SearchView(viewModel: viewModel)
         }
     }
 }
