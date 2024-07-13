@@ -11,19 +11,22 @@ import EnvironmentVariables
 
 public class DictionaryAPIService {
     private let baseURL = EnvironmentVariables.searchUrls.rawValue
-    
-    public init() {}
-    
+    private let urlSession: URLSessionProtocol
+
+    public init(urlSession: URLSessionProtocol = URLSession.shared) {
+        self.urlSession = urlSession
+    }
+
     func searchWord(_ term: String) -> AnyPublisher<[WordDTO], ErrorResponse> {
         let url = URL(string: "\(baseURL)/\(term)")!
 
-        return URLSession.shared.dataTaskPublisher(for: url)
+        return urlSession.dataTask(for: url)
             .map { $0.data }
             .decode(type: APIResponseWrapper.self, decoder: JSONDecoder())
             .tryMap { apiResponseWrapper in
                 switch apiResponseWrapper.response {
                 case .success(let words):
-                    guard let firstWord = words.first else {
+                    guard let _ = words.first else {
                         throw URLError(.badServerResponse)
                     }
                     return words

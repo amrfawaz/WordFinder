@@ -67,5 +67,13 @@ let package = Package(
             name: "PackageTests",
             dependencies: ["Package"]
         ),
+        .testTarget(
+            name: "SearchTests",
+            dependencies: [
+                "Search",
+                "RealmManager"
+            ]
+        ),
+
     ]
 )

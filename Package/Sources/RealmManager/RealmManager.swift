@@ -23,7 +23,10 @@ public class RealmManager {
     }
 
     public func save<T: Object>(_ items: [T]) {
-        let backgroundQueue = DispatchQueue(label: "realmQueue", attributes: .concurrent)
+        let backgroundQueue = DispatchQueue(
+            label: "realmQueue",
+            attributes: .concurrent
+        )
         
         backgroundQueue.async {
             autoreleasepool {
@@ -32,6 +35,27 @@ public class RealmManager {
                 do {
                     try realm.write {
                         realm.add(items, update: .modified)
+                    }
+                } catch {
+                    print("Error saving objects to Realm: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+
+    public func deleteLast<T: Object>(_ item: T) {
+        let backgroundQueue = DispatchQueue(
+            label: "realmQueue",
+            attributes: .concurrent
+        )
+
+        backgroundQueue.async {
+            autoreleasepool {
+                guard let realm = self.createRealmInstance() else { return }
+
+                do {
+                    try realm.write {
+                        realm.delete(item)
                     }
                 } catch {
                     print("Error saving objects to Realm: \(error.localizedDescription)")
