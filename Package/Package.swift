@@ -19,9 +19,6 @@ let package = Package(
             name: "CoreInterface",
             targets: ["CoreInterface"]),
         .library(
-            name: "Package",
-            targets: ["Package"]),
-        .library(
             name: "Search",
             targets: ["Search"]
         ),
@@ -46,9 +43,6 @@ let package = Package(
             dependencies: []
         ),
         .target(
-            name: "Package"
-        ),
-        .target(
             name: "Search",
             dependencies: [
                 "EnvironmentVariables",
@@ -63,10 +57,6 @@ let package = Package(
             ]
         ),
 
-        .testTarget(
-            name: "PackageTests",
-            dependencies: ["Package"]
-        ),
         .testTarget(
             name: "SearchTests",
             dependencies: [
